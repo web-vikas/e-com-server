@@ -10,21 +10,22 @@ const transporter = nodemailer.createTransport({
     pass: smtp_password,
   },
 });
-function sendEmail(receiver, subject, text, html) {
+
+async function sendEmail(receiver, subject, text, html) {
   let mailOptions = {
-    from: "AKME Sender", // sender address
+    from: "AKME Sender",
     to: receiver,
     subject: subject,
     text: text,
     html: html,
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return error;
-    }
+  try {
+    let info = await transporter.sendMail(mailOptions);
     return info.messageId;
-  });
+  } catch (error) {
+    throw new Error(error.message);
+  }
 }
 
 module.exports = sendEmail;

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const OtpSchema = new Schema(
   {
-    customer: { type: String, required: true },
+    email: { type: String, required: true },
     otp: { type: String, required: true },
     expiry: { type: String, required: true },
     type: {

@@ -249,6 +249,16 @@ const GeneratePassword = (length = 8) => {
   return result;
 };
 
+const GenerateOTP = (length = 6) => {
+  let result = "";
+  let characters = "0123456789";
+  let charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
 /*
  * Error Handling methods below
  *
@@ -259,8 +269,8 @@ const HandleSuccess = (res, data) => {
   res.end();
 };
 
-const HandleError = (res, message) => {
-  res.status(202).json({
+const HandleError = (res, message, status = 202) => {
+  res.status(status).json({
     error: message,
   });
   res.end();
@@ -314,6 +324,7 @@ exports.ValidateMobile = ValidateMobile;
 exports.ValidateLength = ValidateLength;
 exports.isDataURL = isDataURL;
 exports.GeneratePassword = GeneratePassword;
+exports.GenerateOTP = GenerateOTP;
 exports.UnauthorizedError = UnauthorizedError;
 exports.HandleServerError = HandleServerError;
 exports.HandleError = HandleError;
