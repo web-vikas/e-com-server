@@ -13,6 +13,13 @@ const UserSchema = new Schema(
       trim: true,
       enum: ["Admin", "Customer", "Seller"],
     },
+    status: {
+      type: String,
+      required: true,
+      default: "Active",
+      trim: true,
+      enum: ["Active", "Suspended", "Ban"],
+    },
     active_session_refresh_token: { type: String },
     access_token: { type: String },
   },

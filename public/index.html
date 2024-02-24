@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>API Documentation</title>
+    <style>
+        ::-webkit-scrollbar{
+            display: none;
+            width: 0;
+        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      header {
+        min-height: 100vh;
+      }
+      nav ul li {
+        margin-bottom: 10px;
+      }
+      h1 {
+        text-align: center;
+      }
+      h2 {
+        margin-top: 40px;
+      }
+      pre {
+        background-color: #f4f4f4;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .wrapper {
+        display: flex;
+        gap: 30px;
+      }
+      main {
+        width: 100%;
+        overflow: scroll;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>API Documentation</h1>
+    <div class="wrapper">
+      <header>
+        <nav>
+          <ul>
+            <li><a href="#signup-email">SignUpEmail</a></li>
+            <li><a href="#verify-signup-otp">VerifySignUpOTP</a></li>
+            <li><a href="#login">Login</a></li>
+            <li><a href="#signup">Sign Up</a></li>
+          </ul>
+        </nav>
+      </header>
+      <main>
+        <section id="signup-email">
+          <h2>SignUpEmail</h2>
+          <p>Sends an OTP to the provided email for signing up.</p>
+          <h3>Endpoint</h3>
+          <pre>POST /v1/email/signup-email</pre>
+          <h3>Request Body</h3>
+          <pre>
+{
+  "email": "user@example.com"
+}
+        </pre
+          >
+          <h3>Response</h3>
+          <pre>
+{
+  "message": "OTP Send Successfully.",
+  "status": 200
+}
+        </pre
+          >
+        </section>
+
+        <section id="verify-signup-otp">
+          <h2>VerifySignUpOTP</h2>
+          <p>
+            Verifies the OTP for signing up. Deletes the OTP after verification.
+          </p>
+          <h3>Endpoint</h3>
+          <pre>POST /v1/email/verify-signup-otp</pre>
+          <h3>Request Body</h3>
+          <pre>
+{
+  "email": "user@example.com",
+  "otp": "123456"
+}
+        </pre
+          >
+          <h3>Response</h3>
+          <pre>
+{
+  "message": "OTP Verified Successfully.",
+  "status": 200
+}
+        </pre
+          >
+        </section>
+
+        <section id="login">
+          <h2>Login</h2>
+          <p>Logs in a user with the provided email and password.</p>
+          <h3>Endpoint</h3>
+          <pre>POST /v1/auth/login</pre>
+          <h3>Request Body</h3>
+          <pre>
+    {
+      "email": "user@example.com",
+      "password": "password"
+    }
+        </pre
+          >
+          <h3>Response</h3>
+          <pre>
+    {
+      "message": "Login successful.",
+      "data": {
+        "_id": "user_id",
+        "email": "user@example.com",
+        "access_token": "jwt_access_token",
+        "active_session_refresh_token": "refresh_token"
+      }
+    }
+        </pre
+          >
+        </section>
+        <section id="signup">
+          <h2>SignUp</h2>
+          <p>
+            Signs up a new user with the provided email, password, name, and
+            phone number.
+          </p>
+          <h3>Endpoint</h3>
+          <pre>POST /v1/auth/customer/sign-up</pre>
+          <h3>Request Body</h3>
+          <pre>
+    {
+      "email": "newuser@example.com",
+      "password": "password",
+      "name": "New User",
+      "phone": "1234567890"
+    }
+        </pre
+          >
+          <h3>Response</h3>
+          <pre>
+    {
+      "message": "Customer Created Successfully.",
+      "data": {
+        "_id": "new_user_id",
+        "email": "newuser@example.com",
+        "name": "New User",
+        "phone": "1234567890",
+        "role": "Customer"
+      }
+    }
+        </pre
+          >
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

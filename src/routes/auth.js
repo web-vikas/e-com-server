@@ -5,4 +5,5 @@ const Controllers = require("../controllers");
 const Auth = Controllers.Auth;
 
 router.post("/login", Auth.Login);
+router.post("/customer/sign-up", Auth.SignUp);
 module.exports = router;

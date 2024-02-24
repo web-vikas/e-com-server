@@ -13,11 +13,19 @@ const {
   FindOne,
   IsExistsOne,
   FindAndUpdate,
+  Delete,
 } = require("./BaseController");
 const sendEmail = require("../services/email");
 const moment = require("moment");
 
 module.exports = {
+  /**
+   * Sends an OTP to the provided email for signing up.
+   * @param {Object} req - The request object containing the email in req.body.
+   * @param {Object} res - The response object.
+   * @param {Function} next - The next middleware function.
+   * @returns {Object} The response object.
+   */
   SignUpEmail: async (req, res, next) => {
     try {
       const { email = "" } = req.body;
@@ -39,6 +47,7 @@ module.exports = {
       const currentOTP = GenerateOTP();
       const expiryTime = moment().add(5, "minutes");
 
+      // Save or update OTP in the database
       const isEmailExistInOTP = await FindAndUpdate({
         model: OTP,
         where: { email },
@@ -55,6 +64,7 @@ module.exports = {
         }
       }
 
+      // Send OTP via email
       sendEmail(
         email,
         "BitBiltz OTP For Sign Up",
@@ -69,10 +79,20 @@ module.exports = {
       HandleServerError(res, req, err);
     }
   },
+
+  /**
+   * Verifies the OTP for signing up.
+   * Deletes the OTP after verification.
+   * @param {Object} req - The request object containing the email and otp in req.body.
+   * @param {Object} res - The response object.
+   * @param {Function} next - The next middleware function.
+   * @returns {Object} The response object.
+   */
   VerifySignUpOTP: async (req, res, next) => {
     try {
       const { email = "", otp = "" } = req.body;
 
+      // Verify OTP
       const isEmailExistInOTP = await IsExistsOne({
         model: OTP,
         where: { email, otp, type: "signup" },
@@ -88,9 +108,16 @@ module.exports = {
         where: { email, otp, type: "signup" },
       });
 
+      // Check OTP expiry
       if (!otpData || moment(otpData.expiry).isBefore(currentTime)) {
         return HandleError(res, "OTP Expired", 400);
       }
+
+      // Delete OTP after verification
+      Delete({
+        model: OTP,
+        where: { email, otp, type: "signup" },
+      });
 
       return HandleSuccess(res, {
         message: "OTP Verified Successfully.",
