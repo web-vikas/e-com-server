@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const fileupload = require("express-fileupload");
+const path = require('path')
 //const socket = require("socket.io");
 const cors = require("cors");
 const { env } = require("./vars");
@@ -24,7 +25,7 @@ app.use(bodyParser.raw({ limit: "50mb" }));
 //     debug: env === "development",
 //   })
 // );
-app.use(express.static("public"));
+app.use("/", express.static("public"));
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
