@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { VerifyToken } = require("../middlewares");
+const { VerifyToken, VerifyAdminToken } = require("../middlewares");
 const { env, secret } = require("../config/vars");
 
 router.use((req, res, next) => {
@@ -35,6 +35,10 @@ router.use("/v1/email", require("./email"));
 
 // Protect all routes after this middleware
 router.use(VerifyToken);
+
+// Protect all routes after this middleware
+router.use(VerifyAdminToken);
+router.use("/v1/admin", require("./admin"));
 
 //Global error handler
 router.use((req, res) => {

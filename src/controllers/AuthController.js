@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Config = require("../config/vars");
-const { User } = require("../models");
+const { User, Customer } = require("../models");
 const saltRounds = 10;
 const {
   HandleSuccess,
@@ -13,6 +13,7 @@ const {
   GeneratePassword,
   FindOne,
   FindAndUpdate,
+  Delete,
 } = require("./BaseController");
 
 module.exports = {
@@ -119,11 +120,22 @@ module.exports = {
       const passwordHash = await bcrypt.hash(password, saltRounds);
 
       // Save new user to the database
-      const saveCustomer = await Insert({
+      const saveUser = await Insert({
         model: User,
-        data: { email, password: passwordHash, name, phone, role: "Customer" },
+        data: { email, password: passwordHash, name, role: "Customer" },
+      });
+      if (!saveUser) {
+        return HandleError(res, "Failed To Create Account !", 502);
+      }
+      const saveCustomer = await Insert({
+        model: Customer,
+        data: { customer: saveUser._id, name, phone },
       });
       if (!saveCustomer) {
+        Delete({
+          model: User,
+          where: { _id: saveUser._id },
+        });
         return HandleError(res, "Failed To Create Account !", 502);
       }
       return HandleSuccess(res, {
