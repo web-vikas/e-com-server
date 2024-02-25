@@ -30,7 +30,7 @@ module.exports = {
     try {
       const { email = "" } = req.body;
       if (!ValidateEmail(email)) {
-        return HandleError(res, "Invalid Email", 400);
+        return HandleError(res, "Invalid Email");
       }
 
       const isEmailExist = await IsExistsOne({
@@ -99,7 +99,7 @@ module.exports = {
       });
 
       if (!isEmailExistInOTP) {
-        return HandleError(res, "Invalid OTP", 400);
+        return HandleError(res, "Invalid OTP");
       }
 
       const currentTime = moment();
@@ -110,7 +110,7 @@ module.exports = {
 
       // Check OTP expiry
       if (!otpData || moment(otpData.expiry).isBefore(currentTime)) {
-        return HandleError(res, "OTP Expired", 400);
+        return HandleError(res, "OTP Expired");
       }
 
       // Delete OTP after verification
