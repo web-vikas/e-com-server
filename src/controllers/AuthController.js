@@ -28,10 +28,10 @@ module.exports = {
     try {
       const { email, password } = req.body;
       if (!ValidateEmail(email)) {
-        return HandleError(res, "Invalid Email", 400);
+        return HandleError(res, "Invalid Email");
       }
       if (!password) {
-        return HandleError(res, "Please Enter Password .", 400);
+        return HandleError(res, "Please Enter Password .");
       }
 
       // Find user by email
@@ -50,7 +50,7 @@ module.exports = {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (!passwordMatch) {
-        return HandleError(res, "Invalid Password.", 400);
+        return HandleError(res, "Invalid Password.");
       }
 
       // Generating a JWT token
@@ -102,10 +102,10 @@ module.exports = {
     try {
       const { email, password, name, phone } = req.body;
       if (!ValidateEmail(email)) {
-        return HandleError(res, "Invalid Email", 400);
+        return HandleError(res, "Invalid Email");
       }
       if (!password) {
-        return HandleError(res, "Please Enter Password .", 400);
+        return HandleError(res, "Please Enter Password .");
       }
       const isEmailExist = await IsExistsOne({
         model: User,

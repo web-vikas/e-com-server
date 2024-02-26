@@ -32,13 +32,13 @@ if (env == "development") {
 
 router.use("/v1/auth", require("./auth"));
 router.use("/v1/email", require("./email"));
+router.use("/v1/admin", require("./admin"));
 
 // Protect all routes after this middleware
 router.use(VerifyToken);
 
 // Protect all routes after this middleware
 router.use(VerifyAdminToken);
-router.use("/v1/admin", require("./admin"));
 
 //Global error handler
 router.use((req, res) => {
