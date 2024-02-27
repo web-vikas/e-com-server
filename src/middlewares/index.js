@@ -37,7 +37,6 @@ const VerifyAdminToken = (req, res, next) => {
           model: User,
           where: { _id: user.id, access_token: token },
         });
-        console.log(isUserExists);
         if (!isUserExists || isUserExists[0].role !== "Admin")
           return UnauthorizedError(res);
         req.user = isUserExists[0];

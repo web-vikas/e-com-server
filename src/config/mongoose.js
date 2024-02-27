@@ -6,7 +6,7 @@ exports.connect = () => {
   return new Promise((resolve, reject) => {
     // print mongoose logs in dev env
     if (env === "development") {
-      mongoose.set("debug", false);
+      mongoose.set("debug", true);
       mongoose.set("strictQuery", true);
     }
     mongoose
