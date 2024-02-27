@@ -60,7 +60,7 @@ module.exports = {
           data: { email, otp: currentOTP, expiry: expiryTime, type: "signup" },
         });
         if (!saveOTP) {
-          return HandleError(res, "Failed To Send OTP", 502);
+          return HandleError(res, "Failed To Send OTP");
         }
       }
 
