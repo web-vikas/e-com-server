@@ -9,29 +9,43 @@ const {
   Find,
   Insert,
   HandleError,
+  Aggregate,
 } = require("./BaseController");
 
 module.exports = {
   GetProducts: async (req, res) => {
     try {
-        const { pageSize = 10, page = 1 } = req.query;
-        const offset = (page - 1) * pageSize;
-  
-        const products = await Find({
-          model: Products,
-          limit: pageSize,
-          skip: offset,
-        });
-  
-        const totalProducts = await Products.count();
-  
-        return HandleSuccess(res, {
-          data: products,
-          totalProducts,
-          pageSize,
-          page,
-          message: "Product Fetched Successfully.",
-        });
+      const { pageSize = 10, page = 1 } = req.query;
+      const offset = (page - 1) * pageSize;
+
+      const products = await Aggregate({
+        model: Products,
+        data: [
+          {
+            $limit: pageSize,
+          },
+          {
+            $skip: offset,
+          },
+          {
+            $project: {
+              images: "$images.front",
+              title: "$productDescription.title",
+              price: "$productInfo.priceSelling",
+              mrp: "$productInfo.priceMRP",
+            },
+          },
+        ],
+      });
+      const totalProducts = await Products.count();
+
+      return HandleSuccess(res, {
+        data: products,
+        totalProducts,
+        pageSize,
+        page,
+        message: "Product Fetched Successfully.",
+      });
     } catch (err) {
       HandleServerError(res, req, err);
     }
