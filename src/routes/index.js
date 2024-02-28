@@ -32,6 +32,7 @@ if (env == "development") {
 
 router.use("/v1/auth", require("./auth"));
 router.use("/v1/email", require("./email"));
+router.use("/v1/public", require("./public"));
 
 // Protect all routes after this middleware
 router.use(VerifyToken);
